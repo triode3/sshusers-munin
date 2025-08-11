@@ -7,6 +7,9 @@ This readme is broken into a few small sections: What,  Why, How to install, How
 
 This readme assumes you know what [Munin](https://munin-monitoring.org/) is all about, and that you want to graph the number of ssh connections to some box that munin is monitoring. 
 
+![screenshot of gpfs-munin for one user with three gpfs filesystems](https://github.com/triode3/sshusers-munin/images/sshusers-munin.png)
+
+
 # Why did I make this?
 
 We have some servers which are the login nodes of our cluster, and fairly often the question of "well, how many users are on login node n?" comes up. Then one or more of us goes to login node n
