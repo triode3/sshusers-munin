@@ -7,6 +7,8 @@ This readme is broken into a few small sections: What,  Why, How to install, How
 
 This readme assumes you know what [Munin](https://munin-monitoring.org/) is all about, and that you want to graph the number of ssh connections to some box that munin is monitoring. 
 
+Here is an exmaple output from munin monitoring active and total ssh users:
+
 ![screenshot of sshusers-munin from a node](https://github.com/triode3/sshusers-munin/blob/main/images/sshusers-munin.png)
 
 
