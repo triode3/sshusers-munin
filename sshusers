@@ -1,0 +1,46 @@
+#!/usr/bin/sh
+# -*- sh -*-
+
+set -e
+
+#
+case $1 in 
+    config)
+        cat <<'EOM'
+graph_title SSH sessions and users
+graph_category network
+graph_vlabel Users
+sshusers.label Number of unique ssh users
+sshusers.info The number of unique ssh users
+totalsshusers.label Total number of users logged in via ssh
+totalsshusers.info The total number of ssh users
+EOM
+    exit 0;;
+esac
+
+# An old way to get total users. Note that some pts connections may not be
+# ssh... 
+# This will include repeated users:
+printf "sshusers.value " ;  w -h |awk '$2 ~ /pts/ { print $1 }' |sort |uniq |wc -l
+#
+# This may be a better way to get total ssh connections:
+# ss -o state established '( dport = : ssh or sport = :ssh )' |wc -l
+#
+# There are many ways to find out about ssh connections on Linux, however, 
+# none of them are 100% reliable (repeats, in/out, active, terminated, etc)
+# so when you just want a count or average, pick one. Here are a number of 
+# methods, with notes:
+#
+#
+# This works "ok", but again with pts, you may pick up some program that is not ssh.
+# printf "totalsshusers.value " ; w -h |awk '$2 ~ /pts/ { print $1 }' |sort |wc -l
+#
+# This is slightly better than the above, using ESTABLISHED.
+# printf "totalsshusers.value " ; netstat -tnpa | grep 'ESTABLISHED.*sshd' |wc -l
+#
+# This is using the new "ss" or Socket Statistics, which is replacing netstat. 
+printf "totalsshusers.value " ; ss -o state established '( sport = :ssh )' |wc -l
+
+# Another one using ss, thing time checking source and destination ports, which
+# will give all possible ssh connections.
+# printf "totalsshusers.value " ; ss -o state established '( dport = : ssh or sport = :ssh )' |wc -l
