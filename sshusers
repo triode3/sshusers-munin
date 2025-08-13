@@ -25,16 +25,15 @@ esac
 # This will include repeated users:
 printf "sshusers.value " ;  w -h |awk '$2 ~ /pts/ { print $1 }' |sort |uniq |wc -l
 #
-# This may be a better way to get total ssh connections:
-# ss -o state established '( dport = : ssh or sport = :ssh )' |wc -l
 #
 # There are many ways to find out about ssh connections on Linux, however, 
 # none of them are 100% reliable (repeats, in/out, active, terminated, etc)
-# so when you just want a count or average, pick one. Here are a number of 
-# methods, with notes:
+# so when you just want a count or average, pick one from the list below that
+# you think will work best in your server environment.
+# Here are a number of methods, with notes:
 #
 #
-# This works "ok", but again with pts, you may pick up some program that is not ssh.
+# This works "ok", but again with pts, you may pick up programs that are not ssh.
 # printf "totalsshusers.value " ; w -h |awk '$2 ~ /pts/ { print $1 }' |sort |wc -l
 #
 # This is slightly better than the above, using ESTABLISHED.
@@ -43,6 +42,6 @@ printf "sshusers.value " ;  w -h |awk '$2 ~ /pts/ { print $1 }' |sort |uniq |wc 
 # This is using the new "ss" or Socket Statistics, which is replacing netstat. 
 printf "totalsshusers.value " ; ss -o state established '( sport = :ssh )' |wc -l
 
-# Another one using ss, thing time checking source and destination ports, which
+# Another one using ss, this time checking source and destination ports, which
 # will give all possible ssh connections.
 # printf "totalsshusers.value " ; ss -o state established '( dport = : ssh or sport = :ssh )' |wc -l
